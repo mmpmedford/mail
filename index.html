@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mail Job Dashboard</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --text-main: #c9d1d9;
+            --accent: #58a6ff;
+            --urgent: #ff7b72;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            overflow: hidden; /* Prevents scrollbars on TV */
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--accent);
+            font-size: 3rem;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid var(--card-bg);
+            padding-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 15px;
+        }
+
+        th {
+            font-size: 1.5rem;
+            color: var(--accent);
+            text-align: left;
+            padding: 10px 20px;
+        }
+
+        tr {
+            background-color: var(--card-bg);
+            transition: transform 0.2s;
+        }
+
+        td {
+            padding: 25px 20px;
+            font-size: 2rem;
+            font-weight: 500;
+        }
+
+        td:first-child { border-radius: 10px 0 0 10px; }
+        td:last-child { border-radius: 0 10px 10px 0; }
+
+        .urgent-row {
+            border: 2px solid var(--urgent);
+            color: var(--urgent);
+        }
+
+        .status-tag {
+            font-size: 1rem;
+            padding: 5px 10px;
+            border-radius: 5px;
+            background: #238636;
+            color: white;
+            vertical-align: middle;
+        }
+
+        /* Digital Clock in corner */
+        #clock {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 1.5rem;
+            color: var(--text-main);
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="clock">Loading time...</div>
+    <h1>Active Mail Jobs</h1>
+
+    <table id="jobTable">
+        <thead>
+            <tr>
+                <th>Job Name</th>
+                <th>Date Written Up</th>
+                <th>Desired Mail Date</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            </tbody>
+    </table>
+
+    <script>
+        // 1. DATA SECTION: Update this list to change the screen
+        const jobs = [
+            { name: "Global Marketing Campaign", written: "2026-03-01", mail: "2026-03-16" },
+            { name: "Monthly Utility Invoices", written: "2026-03-10", mail: "2026-03-20" },
+            { name: "Annual Non-Profit Gala", written: "2026-03-12", mail: "2026-03-25" },
+            { name: "City Council Notices", written: "2026-03-14", mail: "2026-03-18" }
+        ];
+
+        function updateTable() {
+            const tbody = document.getElementById('tableBody');
+            const today = new Date().toISOString().split('T')[0];
+            tbody.innerHTML = '';
+
+            jobs.forEach(job => {
+                const isUrgent = job.mail <= today;
+                const rowClass = isUrgent ? 'urgent-row' : '';
+                
+                tbody.innerHTML += `
+                    <tr class="${rowClass}">
+                        <td>${job.name} ${isUrgent ? '<span class="status-tag">DUE</span>' : ''}</td>
+                        <td>${job.written}</td>
+                        <td>${job.mail}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleString();
+        }
+
+        // Run functions
+        updateTable();
+        setInterval(updateClock, 1000);
+        
+        // Auto-refresh the whole page every 30 minutes to catch GitHub updates
+        setTimeout(() => { location.reload(); }, 1800000);
+    </script>
+</body>
+</html>
