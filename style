@@ -1,0 +1,144 @@
+body {
+    font-family: Arial, sans-serif;
+    background: radial-gradient(circle, #ff9500, #ff6200, #ff8c00);
+    background-size: 400% 400%;
+    animation: swirl 15s ease infinite;
+    color: #000000;
+    margin: 20px;
+    position: relative;
+}
+
+@keyframes swirl {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f8ff;
+    border: 1px solid #0000ff;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.form-column {
+    flex: 1;
+}
+
+.results-column {
+    flex: 1;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+h1 {
+    color: #0000ff;
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    color: #0000cd;
+}
+
+select, input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #0000ff;
+    border-radius: 4px;
+    background-color: #ffffff;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+#calculate, #reset {
+    background-color: #0000ff;
+    color: #ffffff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+    font-weight: bold;
+}
+
+#calculate:hover, #reset:hover {
+    background-color: #0000cd;
+}
+
+#results, #postage-costs {
+    padding: 15px;
+    background-color: #ffffff;
+    border: 1px solid #0000ff;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+#results {
+    flex-grow: 1;
+}
+
+.total {
+    font-weight: bold;
+    color: #0000ff;
+    font-size: 1.1em;
+}
+
+.breakdown {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+.breakdown li {
+    margin-bottom: 5px;
+}
+
+#image-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #ffffff;
+    padding: 10px;
+    width: 220px;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+#image-container img {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    #image-container {
+        position: static;
+        margin-bottom: 20px;
+        width: 100%;
+        height: auto;
+    }
+}
