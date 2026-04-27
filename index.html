@@ -3,144 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mail Job Dashboard</title>
-    <style>
-        :root {
-            --bg-color: #0d1117;
-            --card-bg: #161b22;
-            --text-main: #c9d1d9;
-            --accent: #58a6ff;
-            --urgent: #ff7b72;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            overflow: hidden; /* Prevents scrollbars on TV */
-        }
-
-        h1 {
-            text-align: center;
-            color: var(--accent);
-            font-size: 3rem;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border-bottom: 2px solid var(--card-bg);
-            padding-bottom: 10px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 15px;
-        }
-
-        th {
-            font-size: 1.5rem;
-            color: var(--accent);
-            text-align: left;
-            padding: 10px 20px;
-        }
-
-        tr {
-            background-color: var(--card-bg);
-            transition: transform 0.2s;
-        }
-
-        td {
-            padding: 25px 20px;
-            font-size: 2rem;
-            font-weight: 500;
-        }
-
-        td:first-child { border-radius: 10px 0 0 10px; }
-        td:last-child { border-radius: 0 10px 10px 0; }
-
-        .urgent-row {
-            border: 2px solid var(--urgent);
-            color: var(--urgent);
-        }
-
-        .status-tag {
-            font-size: 1rem;
-            padding: 5px 10px;
-            border-radius: 5px;
-            background: #238636;
-            color: white;
-            vertical-align: middle;
-        }
-
-        /* Digital Clock in corner */
-        #clock {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            font-size: 1.5rem;
-            color: var(--text-main);
-            font-family: monospace;
-        }
-    </style>
+    <title>Mailing Job Timeline Calculator & Postage Estimater</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <div id="clock">Loading time...</div>
-    <h1>Active Mail Jobs</h1>
-
-    <table id="jobTable">
-        <thead>
-            <tr>
-                <th>Job Name</th>
-                <th>Date Written Up</th>
-                <th>Desired Mail Date</th>
-            </tr>
-        </thead>
-        <tbody id="tableBody">
-            </tbody>
-    </table>
-
-    <script>
-        // 1. DATA SECTION: Update this list to change the screen
-        const jobs = [
-            { name: "Global Marketing Campaign", written: "2026-03-01", mail: "2026-03-16" },
-            { name: "Monthly Utility Invoices", written: "2026-03-10", mail: "2026-03-20" },
-            { name: "Annual Non-Profit Gala", written: "2026-03-12", mail: "2026-03-25" },
-            { name: "City Council Notices", written: "2026-03-14", mail: "2026-03-18" }
-        ];
-
-        function updateTable() {
-            const tbody = document.getElementById('tableBody');
-            const today = new Date().toISOString().split('T')[0];
-            tbody.innerHTML = '';
-
-            jobs.forEach(job => {
-                const isUrgent = job.mail <= today;
-                const rowClass = isUrgent ? 'urgent-row' : '';
-                
-                tbody.innerHTML += `
-                    <tr class="${rowClass}">
-                        <td>${job.name} ${isUrgent ? '<span class="status-tag">DUE</span>' : ''}</td>
-                        <td>${job.written}</td>
-                        <td>${job.mail}</td>
-                    </tr>
-                `;
-            });
-        }
-
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleString();
-        }
-
-        // Run functions
-        updateTable();
-        setInterval(updateClock, 1000);
-        
-        // Auto-refresh the whole page every 30 minutes to catch GitHub updates
-        setTimeout(() => { location.reload(); }, 1800000);
-    </script>
+    <div id="image-container">
+        <img src="logo.png" alt="Mailing Calculator Logo">
+    </div>
+    <div class="container">
+        <div class="form-column">
+            <h1>Mailing Job Timeline Calculator & Postage Estimater</h1>
+            <p>Enter details to estimate total time based on per 1,000 pieces rates from the document.</p>
+            
+            <label for="pieces">Number of Mail Pieces:</label>
+            <input type="text" id="pieces" value="1,000">
+            
+            <div class="checkbox-container">
+                <input type="checkbox" id="processingList">
+                <label for="processingList">Processing List (20 min)</label>
+            </div>
+            
+            <label for="envelopeType">Opening Envelopes (Env Type):</label>
+            <select id="envelopeType">
+                <option value="none">No Opening</option>
+                <option value="10">10 (30 min/1000 to open)</option>
+                <option value="A7">A7 (45 min/1000 to open)</option>
+            </select>
+            
+            <label for="inserts">Number of Inserts:</label>
+            <select id="inserts">
+                <option value="0">No Inserts</option>
+                <option value="1">1 Insert</option>
+                <option value="2">2 Inserts</option>
+                <option value="3">3 Inserts</option>
+            </select>
+            
+            <label for="insertMethod">Inserting Method:</label>
+            <select id="insertMethod">
+                <option value="none">No Inserting</option>
+                <option value="manual">Manual</option>
+                <option value="automated">Automated</option>
+            </select>
+            
+            <label for="addressing">Addressing Mail:</label>
+            <select id="addressing">
+                <option value="no">No</option>
+                <option value="yes">Yes (20 min/1000)</option>
+            </select>
+            
+            <label for="sealingMethod">Sealing Method:</label>
+            <select id="sealingMethod">
+                <option value="none">No Sealing</option>
+                <option value="manual">Manual (60 min/1000)</option>
+                <option value="automated">Automated (20 min/1000)</option>
+            </select>
+            
+            <label for="stamps">Applying Stamps:</label>
+            <select id="stamps">
+                <option value="no">No</option>
+                <option value="yes">Yes (20 min/1000)</option>
+            </select>
+            
+            <label for="tabbing">Tabbing:</label>
+            <select id="tabbing">
+                <option value="no">No</option>
+                <option value="yes">Yes (20 min/1000)</option>
+            </select>
+            
+            <label for="mailType">Mail Type:</label>
+            <select id="mailType">
+                <option value="standard">Standard (No EDDM Prep)</option>
+                <option value="eddm">EDDM (Includes 15 min/1000 Prep)</option>
+                <option value="eddm_strap">EDDM (Includes 10 min/1000 Prep) [1 Strap Already Done]</option>
+            </select>
+            
+            <div class="checkbox-container">
+                <input type="checkbox" id="centerSheet">
+                <label for="centerSheet">Insert Center/Facing Sheet (EDDM) [5 min/1000]</label>
+            </div>
+            
+            <div class="checkbox-container">
+                <input type="checkbox" id="loadingTransport">
+                <label for="loadingTransport">Loading/Transport (30 min)</label>
+            </div>
+            
+            <button id="calculate">Calculate Total Time</button>
+        </div>
+        <div class="results-column">
+            <div id="results"></div>
+            <div id="postage-costs"></div>
+            <button id="reset">Reset Form</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
